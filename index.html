@@ -162,31 +162,31 @@
         <div class="glass-card rounded-2xl p-6 md:p-8 shadow-xl">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
                 <div>
-                    <p class="text-sm text-gray-500">Ringkasan realtime — update manual sesuai progress tim</p>
+                    <p class="text-sm text-gray-500">Ringkasan realtime — tersinkron dari GitHub Issues (label subtema) • batas publik GitHub 60 req/jam</p>
                     <h3 class="text-2xl font-bold mt-1">Progress Mini Project</h3>
                 </div>
                 <div class="flex flex-wrap gap-3 text-sm">
-                    <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-200">Submitted: 0/12</span>
-                    <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-200">Subtema dipilih: 0/12</span>
-                    <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-200">Belum pilih: 12</span>
+                    <span id="badgeSubmitted" class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-200">Submitted: 0/12</span>
+                    <span id="badgeClaims" class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-200">Subtema dipilih: 0/12</span>
+                    <span id="badgePending" class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-200">Belum pilih: 12</span>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <div class="flex justify-between text-sm text-gray-500 mb-2">
-                        <span>Subtema dipilih</span><span>0/12</span>
+                        <span>Subtema dipilih</span><span><span id="claimsCount">0</span>/12</span>
                     </div>
                     <div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-3">
-                        <div class="bg-blue-500 h-3 rounded-full" style="width: 0%"></div>
+                        <div id="barClaims" class="bg-blue-500 h-3 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
                 <div>
                     <div class="flex justify-between text-sm text-gray-500 mb-2">
-                        <span>Submission selesai</span><span>0/12</span>
+                        <span>Submission selesai</span><span><span id="submitCount">0</span>/12</span>
                     </div>
                     <div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-3">
-                        <div class="bg-emerald-500 h-3 rounded-full" style="width: 0%"></div>
+                        <div id="barSubmit" class="bg-emerald-500 h-3 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
@@ -648,9 +648,13 @@
             const wrapper = document.createElement('div');
             wrapper.className = 'flex flex-col gap-2 mb-3';
             wrapper.innerHTML = `
-                <span class="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-100">
+                <span data-subtema-team="${idx + 1}" class="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-100">
                     <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                     Subtema: belum dipilih
+                </span>
+                <span data-submission-team="${idx + 1}" class="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200">
+                    <span class="w-2 h-2 rounded-full bg-gray-400"></span>
+                    Submission: belum ada
                 </span>
                 <button data-claim="true" data-team="${idx + 1}" class="text-xs inline-flex items-center justify-center gap-2 px-3 py-2 rounded-full bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition">
                     Claim Subtema
@@ -659,6 +663,8 @@
             `;
             p.insertAdjacentElement('afterend', wrapper);
         });
+
+        const state = { claims: {}, submissions: {} };
 
         // Modal logic
         const modal = document.getElementById('claimModal');
@@ -740,6 +746,141 @@
                 closeModal();
             });
         }
+
+        // Fetch subtema claims from GitHub Issues (label: subtema)
+        const owner = 'fk0u';
+        const repo = 'pkaltim';
+
+        async function fetchClaims() {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues?labels=subtema&state=all&per_page=100`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const issues = await res.json();
+                const claimsMap = {};
+
+                issues.forEach((issue) => {
+                    const m = issue.title.match(/Tim\s*(\d{1,2})/i);
+                    if (!m) return;
+                    const teamNum = parseInt(m[1], 10);
+                    let subtema = '';
+                    const titleSub = issue.title.replace(/.*-\s*/,'').trim();
+                    if (titleSub && !/\[Tim/i.test(titleSub)) subtema = titleSub;
+                    if (!subtema && issue.body) {
+                        const b = issue.body.match(/Subtema\s*:\s*(.+)/i);
+                        if (b) subtema = b[1].trim();
+                    }
+                    claimsMap[teamNum] = {
+                        subtema: subtema || 'Terbaca dari issue',
+                        url: issue.html_url,
+                        state: issue.state,
+                    };
+                });
+
+                state.claims = claimsMap;
+                syncUI();
+            } catch (err) {
+                console.warn('Gagal fetch issues subtema:', err);
+            }
+        }
+
+        async function fetchSubmissions() {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/pulls?state=all&per_page=100`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const prs = await res.json();
+                const submissions = {};
+
+                const priority = { merged: 3, open: 2, closed: 1 };
+
+                prs.forEach((pr) => {
+                    const m = pr.title.match(/Tim\s*(\d{1,2})/i);
+                    if (!m) return;
+                    const teamNum = parseInt(m[1], 10);
+                    const status = pr.merged_at ? 'merged' : (pr.state === 'open' ? 'open' : 'closed');
+                    const current = submissions[teamNum];
+                    if (!current || priority[status] > priority[current.status]) {
+                        submissions[teamNum] = {
+                            status,
+                            url: pr.html_url,
+                            title: pr.title,
+                        };
+                    }
+                });
+
+                state.submissions = submissions;
+                syncUI();
+            } catch (err) {
+                console.warn('Gagal fetch PR submissions:', err);
+            }
+        }
+
+        function syncUI() {
+            const totalTeams = 12;
+            const claimed = Object.keys(state.claims).length;
+            const submitted = Object.keys(state.submissions).length;
+
+            // Update badges
+            const badgeClaims = document.getElementById('badgeClaims');
+            const badgePending = document.getElementById('badgePending');
+            const badgeSubmitted = document.getElementById('badgeSubmitted');
+            if (badgeClaims) badgeClaims.textContent = `Subtema dipilih: ${claimed}/${totalTeams}`;
+            if (badgePending) badgePending.textContent = `Belum pilih: ${Math.max(totalTeams - claimed, 0)}`;
+            if (badgeSubmitted) badgeSubmitted.textContent = `Submitted: ${submitted}/${totalTeams}`;
+
+            // Update bars
+            const barClaims = document.getElementById('barClaims');
+            const barSubmit = document.getElementById('barSubmit');
+            const claimsCount = document.getElementById('claimsCount');
+            const submitCount = document.getElementById('submitCount');
+            const claimsPct = Math.min(100, (claimed / totalTeams) * 100);
+            const submitPct = Math.min(100, (submitted / totalTeams) * 100);
+            if (barClaims) barClaims.style.width = `${claimsPct}%`;
+            if (barSubmit) barSubmit.style.width = `${submitPct}%`;
+            if (claimsCount) claimsCount.textContent = claimed;
+            if (submitCount) submitCount.textContent = submitted;
+
+            // Update badges on cards
+            document.querySelectorAll('[data-subtema-team]').forEach((el) => {
+                const team = parseInt(el.getAttribute('data-subtema-team'), 10);
+                const claim = state.claims[team];
+                const dot = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span>';
+                if (claim) {
+                    el.classList.remove('bg-amber-100','text-amber-700','dark:bg-amber-900/60','dark:text-amber-100');
+                    el.classList.add('bg-emerald-100','text-emerald-700','dark:bg-emerald-900/60','dark:text-emerald-100');
+                    el.innerHTML = `${dot} Subtema: ${claim.subtema}`;
+                } else {
+                    el.classList.add('bg-amber-100','text-amber-700','dark:bg-amber-900/60','dark:text-amber-100');
+                    el.classList.remove('bg-emerald-100','text-emerald-700','dark:bg-emerald-900/60','dark:text-emerald-100');
+                    el.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500"></span> Subtema: belum dipilih';
+                }
+            });
+
+            document.querySelectorAll('[data-submission-team]').forEach((el) => {
+                const team = parseInt(el.getAttribute('data-submission-team'), 10);
+                const submission = state.submissions[team];
+                el.classList.remove('bg-emerald-100','text-emerald-700','dark:bg-emerald-900/60','dark:text-emerald-100','bg-blue-100','text-blue-700','dark:bg-blue-900/60','dark:text-blue-100','bg-gray-100','text-gray-700','dark:bg-gray-800','dark:text-gray-200');
+                if (submission) {
+                    let colorClasses = ['bg-blue-100','text-blue-700','dark:bg-blue-900/60','dark:text-blue-100'];
+                    if (submission.status === 'merged') colorClasses = ['bg-emerald-100','text-emerald-700','dark:bg-emerald-900/60','dark:text-emerald-100'];
+                    if (submission.status === 'closed' && !submission.merged_at) colorClasses = ['bg-gray-100','text-gray-700','dark:bg-gray-800','dark:text-gray-200'];
+                    el.classList.add(...colorClasses);
+                    const dotColor = submission.status === 'merged' ? 'bg-emerald-500' : (submission.status === 'open' ? 'bg-blue-500' : 'bg-gray-400');
+                    el.innerHTML = `<span class="w-2 h-2 rounded-full ${dotColor}"></span> Submission: ${submission.status}`;
+                } else {
+                    el.classList.add('bg-gray-100','text-gray-700','dark:bg-gray-800','dark:text-gray-200');
+                    el.innerHTML = '<span class="w-2 h-2 rounded-full bg-gray-400"></span> Submission: belum ada';
+                }
+            });
+        }
+
+        function refreshData() {
+            fetchClaims();
+            fetchSubmissions();
+        }
+
+        // Initial fetch + polling every 60s
+        refreshData();
+        setInterval(refreshData, 60000);
     </script>
 </body>
 </html>
