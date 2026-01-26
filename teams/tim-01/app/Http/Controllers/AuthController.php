@@ -2,47 +2,44 @@
 
 namespace App\Http\Controllers;
 
+// package imports
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // ===== HALAMAN LOGIN =====
-    public function loginPage()
+    public function showLoginForm()
     {
-        return view('Login'); // SESUAIKAN NAMA FILE (Login.blade.php)
+        return view('auth.login');
     }
 
-    // ===== PROSES LOGIN =====
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+        $credentials = $request->validate([
+            'username' => ['required'],
+            'password' => ['required'],
         ]);
 
-        $credentials = $request->only('email', 'password');
-
+        // Cek login menggunakan guard default (pastikan config auth.php diatur ke tabel admins atau users)
+        // Atau gunakan Auth::guard('admin')->attempt($credentials) jika sudah setup custom guard
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            // 🔥 LANGSUNG KE DASHBOARD
-            return redirect('/dashboard');
+            return redirect()->intended('admin/dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah'
-        ])->withInput();
+            'username' => 'Username atau password salah.',
+        ]);
     }
 
-    // ===== LOGOUT =====
     public function logout(Request $request)
     {
         Auth::logout();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        return redirect('/login');
+        return redirect('/');
     }
+
+    
 }

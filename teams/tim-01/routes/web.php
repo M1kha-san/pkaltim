@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\PublicController;
 // GANTI INI: Panggil DashboardController
-use App\Http\Controllers\DashboardController; 
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 // LANDING PAGE
-Route::get('/', [LandingPageController::class, 'index'])->name('landing');
+Route::get('/', [PublicController::class, 'index'])->name('landing');
 
 // LOGIN & LOGOUT
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
