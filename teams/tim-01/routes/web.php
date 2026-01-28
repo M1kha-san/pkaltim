@@ -1,29 +1,52 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PublicController;
-// GANTI INI: Panggil DashboardController
-use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PublicController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DestinationController;
 
-// LANDING PAGE
-Route::get('/', [PublicController::class, 'index'])->name('landing');
+/*
+|--------------------------------------------------------------------------
+| BAGIAN PUBLIC (PENGUNJUNG)
+|--------------------------------------------------------------------------
+*/
+Route::get('/', [PublicController::class, 'landing'])->name('landing');
 
-// LOGIN & LOGOUT
+// Halaman List Wisata (URL: /destination)
+Route::get('/destination', [PublicController::class, 'index'])->name('destination.index');
+
+// Halaman Detail Wisata (URL: /destination/nama-slug)
+Route::get('/destination/{slug}', [PublicController::class, 'show'])->name('destination.show');
+
+// Kirim Review
+Route::post('/review/{id}', [PublicController::class, 'storeReview'])->name('review.store');
+
+/*
+|--------------------------------------------------------------------------
+| BAGIAN AUTH
+|--------------------------------------------------------------------------
+*/
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// DASHBOARD (Sekarang pakai DashboardController)
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('auth')
-    ->name('dashboard');
+/*
+|--------------------------------------------------------------------------
+| BAGIAN ADMIN
+|--------------------------------------------------------------------------
+| Menggunakan prefix 'admin' dan name 'admin.'
+*/
+Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () {
 
-// CRUD DATA (Tetap arahkan ke DashboardController)
-Route::post('/destinations', [DashboardController::class, 'store'])
-    ->middleware('auth')
-    ->name('destinations.store');
+    // 1. Dashboard Admin
+    // URL Browser: http://127.0.0.1:8000/admin/dashboard
+    // Route Name: admin.dashboard
+    Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::delete('/destinations/{id}', [DashboardController::class, 'destroy'])
-    ->middleware('auth')
-    ->name('destinations.destroy');
+    // 2. Kelola Destinasi (CRUD)
+    // URL Browser: http://127.0.0.1:8000/admin/destinations
+    // Route Name: admin.destinations.index (dan turunannya)
+    Route::resource('admin/destinations', DestinationController::class);
+
+});

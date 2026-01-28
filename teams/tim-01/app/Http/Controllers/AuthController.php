@@ -2,35 +2,39 @@
 
 namespace App\Http\Controllers;
 
-// package imports
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function showLoginForm()
+    public function loginPage()
     {
-        return view('auth.login');
+        return view('login');
     }
 
     public function login(Request $request)
     {
+        // 1. Validasi Username & Password
         $credentials = $request->validate([
-            'username' => ['required'],
+            'username' => ['required'], 
             'password' => ['required'],
         ]);
 
-        // Cek login menggunakan guard default (pastikan config auth.php diatur ke tabel admins atau users)
-        // Atau gunakan Auth::guard('admin')->attempt($credentials) jika sudah setup custom guard
+        // 2. Coba Login
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('admin/dashboard');
+
+            // PERBAIKAN DI SINI:
+            // Kita pakai redirect()->route() supaya mengarah ke 'admin.dashboard'
+            // Walaupun URL-nya berubah-ubah, selama nama route-nya sama, ini akan jalan.
+            return redirect()->route('admin.dashboard');
         }
 
+        // 3. Jika Gagal
         return back()->withErrors([
             'username' => 'Username atau password salah.',
-        ]);
+        ])->onlyInput('username');
     }
 
     public function logout(Request $request)
@@ -40,6 +44,4 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/');
     }
-
-    
 }

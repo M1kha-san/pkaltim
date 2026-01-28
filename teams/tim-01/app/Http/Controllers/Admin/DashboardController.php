@@ -2,32 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
-// package imports
-use Illuminate\Routing\Controller;
-use App\Models\Destination;
-use App\Models\Category;
-use App\Models\Review;
-use App\Models\Admin;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Destination; // ✅ Import Model Destination
+use App\Models\Category;    // ✅ Import Model Category
+// use App\Models\Review;   // ⚠️ Buka komentar ini jika sudah punya model Review
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Menghitung total data untuk widget di dashboard
+        // 1. Ambil Data ASLI dari Database (Bukan Dummy)
         $totalDestinations = Destination::count();
-        $totalCategories = Category::count();
         
-        // Hitung review yang masih pending (butuh tindakan admin)
-        $pendingReviews = Review::where('status', 'pending')->count();
+        // 2. Jika belum punya tabel reviews, kita bisa pakai Category dulu atau set 0
+        // $totalReviews = Review::count(); 
+        $totalReviews = 0; // Ganti baris ini dengan Review::count() jika model sudah ada
         
-        // Ambil 5 review terbaru untuk ditampilkan di list dashboard
-        $latestReviews = Review::with('destination')->latest()->take(5)->get();
-
-        return view('admin.dashboard', compact(
-            'totalDestinations', 
-            'totalCategories', 
-            'pendingReviews',
-            'latestReviews'
-        ));
+        // 3. Kirim data ke View baru
+        return view('admin.Dashboard', compact('totalDestinations', 'totalReviews'));
     }
 }
