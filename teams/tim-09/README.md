@@ -1,35 +1,82 @@
-Tim 09 - Direktori & Pariwisata Kuliner
+# 🍽️ Kulkaltim  
+**Direktori & Pariwisata Kuliner Kalimantan Timur**
 
-PIC: [Navies] Subtema: Kuliner Kalimantan Timur (Kulkaltim)
+## 📌 Informasi Tim
+**Tim 09 – Direktori & Pariwisata Kuliner**  
+**Subtema:** Aplikasi Direktori Kuliner Kalimantan Timur (Kulkaltim)  
+**PIC:** [Nama PIC]
 
-👥 Anggota Tim
+### 👥 Anggota Tim
+- **[Nama 1]** (Leader) – Project Manager & Backend Logic  
+- **[Nama 2]** – Frontend UI/UX & Styling  
+- **[Nama 3]** – Data Entry & Testing  
 
-[Muhammad Rifqi Ramadhan] (Leader) - Project Manager
-[Muhammad Zidan Pratama] - Backend
-[Rafik Anugrah Yana] - Frontend UI/UX & Styling
+---
 
-📝 Deskripsi Project
+## 📝 Deskripsi Project
+**Kulkaltim** adalah platform direktori kuliner berbasis web yang dirancang untuk memperkenalkan kekayaan makanan dan minuman khas **Kalimantan Timur**.  
+Aplikasi ini menjadi solusi bagi wisatawan maupun masyarakat lokal dalam mencari referensi tempat makan yang valid, terpusat, dan mudah diakses.
 
-Kulkaltim adalah platform direktori kuliner berbasis web yang dirancang untuk memperkenalkan kekayaan makanan dan minuman khas Kalimantan Timur. Aplikasi ini hadir sebagai solusi bagi wisatawan maupun warga lokal yang kesulitan mencari referensi tempat makan yang valid dan terpusat.
-Sistem ini dibangun dengan Laravel 12.x dan MySQL, serta menggunakan Bootstrap 5 untuk antarmuka yang responsif dan modern. Aplikasi ini memfasilitasi dua peran pengguna:
-Front-Office (User Umum): Dapat mencari kuliner berdasarkan nama menu atau restoran, memfilter berdasarkan kota, melihat detail harga, lokasi via Google Maps, serta memberikan rating dan ulasan.
-Back-Office (Administrator): Dashboard admin yang dilengkapi grafik statistik (Chart.js) untuk mengelola data kota, restoran, menu, serta memoderasi ulasan pengunjung.
+Sistem dibangun menggunakan **Laravel 10.x** dan **MySQL**, dengan **Bootstrap 5** sebagai framework UI untuk menghasilkan tampilan yang responsif, modern, dan konsisten dengan tema **Sage Green**.
 
-🎯 Target Fitur
+---
 
-Berikut adalah status pengembangan fitur utama aplikasi:
+## 👤 Peran Pengguna
 
-[x] CRUD Lengkap (Manajemen data Kota, Restoran, Menu, dan Review via Admin Panel)
-[x] Login Admin (Autentikasi aman menggunakan Session & Hashing Bcrypt)
-[x] Responsive UI (Tampilan optimal di Desktop & Mobile menggunakan Bootstrap 5)
-[x] Database Relational (Relasi tabel Kota -> Resto -> Menu -> Review yang terintegrasi)
-[x] Fitur Tambahan (Pencarian, Filter Kota, Hitung Rating Otomatis, & Google Maps Embed)
-[ ] Deploy Hosting (Tahap selanjutnya setelah finalisasi local development)
+### 🧑‍🍳 Front-Office (User Umum)
+- Pencarian kuliner berdasarkan **nama menu atau restoran**
+- Filter kuliner berdasarkan **kota**
+- Melihat detail menu (harga & deskripsi)
+- Akses lokasi restoran melalui **Google Maps**
+- Memberikan **rating & ulasan**
 
-🚀 Live Demo
-URL: [Coming Soon / Link Hosting]
+### 🛠️ Back-Office (Administrator)
+- Dashboard admin dengan **grafik statistik (Chart.js)**
+- Manajemen data:
+  - Kota
+  - Restoran
+  - Menu
+  - Review Pengunjung
+- Moderasi ulasan pengguna
+- Autentikasi admin yang aman
 
-📅 Status
-🔄 Development (fitur sudah selesai)
+---
 
-Last Update: 1 Februari 2026
+## 🎯 Target & Status Fitur
+
+| Fitur | Status |
+|------|--------|
+| CRUD Kota, Restoran, Menu, Review | ✅ |
+| Login Admin (Session & Bcrypt) | ✅ |
+| Responsive UI (Bootstrap 5) | ✅ |
+| Database Relational (Kota → Resto → Menu → Review) | ✅ |
+| Pencarian & Filter Kota | ✅ |
+| Hitung Rating Otomatis | ✅ |
+| Google Maps Embed | ✅ |
+| Deploy Hosting | ⏳ |
+
+---
+
+## 🗄️ Teknologi yang Digunakan
+- **Framework:** Laravel 10.x  
+- **Database:** MySQL  
+- **Frontend:** Bootstrap 5  
+- **Chart:** Chart.js  
+- **Authentication:** Session & Bcrypt  
+- **Maps:** Google Maps Embed  
+
+---
+
+## 🚀 Live Demo
+🔗 **URL:** _Coming Soon_
+
+---
+
+## 📅 Status Project
+🔄 **Development (Hampir Selesai)**  
+🕒 **Last Update:** 1 Februari 2026
+
+---
+
+## 📄 Lisensi
+Project ini dibuat untuk keperluan edukasi dan pengembangan sistem informasi berbasis web.
