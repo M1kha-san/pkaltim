@@ -13,7 +13,7 @@
         </div>
         <div class="footer-section">
           <h4>Kontak</h4>
-          <p>Email: info@pkaltim.local</p>
+          <p>Email: muhammadnaviesr@gmail.com</p>
           <p>SMK Negeri 7 Samarinda</p>
         </div>
       </div>

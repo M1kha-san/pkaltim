@@ -1,0 +1,3 @@
+[submodule "teams/tim-04/src/pkaltim-tim04"]
+	path = teams/tim-04/src/pkaltim-tim04
+	url = https://github.com/fk0u/pkaltim-tim04.git

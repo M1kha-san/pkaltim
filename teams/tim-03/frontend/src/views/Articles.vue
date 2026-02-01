@@ -7,7 +7,7 @@
         
         <!-- Category Filter -->
         <div class="filter-section mb-4">
-          <select v-model="selectedCategory" @change="loadArticles" class="form-select" style="max-width: 300px;">
+          <select v-model="selectedCategory" @change="loadArticles(0)" class="form-select" style="max-width: 300px;">
             <option value="">Semua Kategori</option>
             <option v-for="cat in categories" :key="cat.id" :value="cat.id">
               {{ cat.name }}
