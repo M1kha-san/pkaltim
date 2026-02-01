@@ -14,27 +14,28 @@ class Destination extends Model
 
     // 1. Kolom yang bisa diisi (Wajib sama dengan Controller)
     protected $fillable = [
-    'category_id',
-    'name',
-    'slug',
-    'description',
-    'address',      // <--- Pastikan ini ada
-    'price',
-    'price_note',
-    'latitude',
-    'longitude',
-    'opening_hours',
-    'image',        // <--- Pastikan ini ada juga
-];
+        'category_id',
+        'name',
+        'slug',
+        'description',
+        'address',      // <--- Pastikan ini ada
+        'price',
+        'price_note',
+        'latitude',
+        'longitude',
+        'opening_hours',
+        'image',        // <--- Pastikan ini ada juga
+    ];
 
     // ==========================
     // RELASI DATABASE
     // ==========================
 
     // 2. Relasi ke Category
-    public function categories()
+    // 2. Relasi ke Category
+    public function category()
     {
-        return $this->belongsTo(Category::class, 'categories_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     // 3. Relasi ke Facilities (Pivot)
@@ -48,5 +49,11 @@ class Destination extends Model
     public function images()
     {
         return $this->hasMany(DestinationImage::class);
+    }
+
+    // 5. Relasi ke Reviews
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

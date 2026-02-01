@@ -10,14 +10,14 @@ class AuthController extends Controller
 {
     public function loginPage()
     {
-        return view('login');
+        return view('Login');
     }
 
     public function login(Request $request)
     {
         // 1. Validasi Username & Password
         $credentials = $request->validate([
-            'username' => ['required'], 
+            'username' => ['required'],
             'password' => ['required'],
         ]);
 

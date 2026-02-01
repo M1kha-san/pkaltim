@@ -60,7 +60,7 @@
     <div class="bg-white dark:bg-gray-800 rounded-[2rem] shadow-xl dark:shadow-none border border-transparent dark:border-gray-700 w-full max-w-[450px] p-10 z-10 mx-4 mt-20">
         
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Masuk Admin</h1>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Masuk</h1>
             <p class="text-gray-400 dark:text-gray-500 text-xs">Silakan login untuk mengelola data wisata</p>
         </div>
 
@@ -82,7 +82,7 @@
                     type="text" 
                     name="username" 
                     value="{{ old('username') }}"
-                    placeholder="Contoh: admin" 
+                    placeholder="Username" 
                     required
                     class="w-full px-4 py-3.5 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10C858] focus:bg-white dark:focus:bg-gray-600 transition-all text-sm">
             </div>
@@ -94,7 +94,7 @@
                         type="password" 
                         id="password"
                         name="password" 
-                        placeholder="Masukkan kata sandi" 
+                        placeholder="Kata sandi" 
                         required
                         class="w-full px-4 py-3.5 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-300 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#10C858] focus:bg-white dark:focus:bg-gray-600 transition-all text-sm pr-10">
                     

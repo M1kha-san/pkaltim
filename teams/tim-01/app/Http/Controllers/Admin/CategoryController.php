@@ -46,12 +46,12 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:100|unique:categories,name,'.$id, // Ignore unique untuk ID ini
+            'name' => 'required|string|max:100|unique:categories,name,' . $id, // Ignore unique untuk ID ini
             'description' => 'nullable|string'
         ]);
 
         $category = Category::findOrFail($id);
-        
+
         $category->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name),

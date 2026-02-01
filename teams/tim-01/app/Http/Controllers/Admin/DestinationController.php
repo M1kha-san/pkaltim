@@ -18,9 +18,9 @@ class DestinationController extends Controller
         $categories = Category::all();
 
         $totalDestinations = Destination::count();
-        $totalReviews = 0;   
+        $totalReviews = 0;
 
-        return view('admin.Destination', compact('destinations', 'categories','totalDestinations', 'totalReviews'));
+        return view('admin.Index', compact('destinations', 'categories', 'totalDestinations', 'totalReviews'));
     }
 
     public function store(Request $request)
@@ -48,7 +48,7 @@ class DestinationController extends Controller
             'category_id' => $request->category_id,
             'description' => $request->description,
             'price' => $request->price,
-            
+
             // --- BAGIAN YANG DIPERBAIKI ---
             'address' => $request->address, // Dulu $request->location (salah)
             // ------------------------------
@@ -78,7 +78,7 @@ class DestinationController extends Controller
             'category_id' => $request->category_id,
             'description' => $request->description,
             'price' => $request->price,
-            
+
             // --- BAGIAN YANG DIPERBAIKI ---
             'address' => $request->address, // Dulu $request->location (salah)
             // ------------------------------
@@ -100,11 +100,11 @@ class DestinationController extends Controller
     public function destroy($id)
     {
         $destination = Destination::findOrFail($id);
-        
+
         if ($destination->image) {
             Storage::disk('public')->delete($destination->image);
         }
-        
+
         $destination->delete();
 
         return redirect()->back()->with('success', 'Destinasi berhasil dihapus!');

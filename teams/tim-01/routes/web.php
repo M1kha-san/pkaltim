@@ -5,6 +5,7 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DestinationController;
+use App\Http\Controllers\DestinationController as PublicDestinationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,8 @@ Route::get('/', [PublicController::class, 'landing'])->name('landing');
 Route::get('/destination', [PublicController::class, 'index'])->name('destination.index');
 
 // Halaman Detail Wisata (URL: /destination/nama-slug)
-Route::get('/destination/{slug}', [PublicController::class, 'show'])->name('destination.show');
+// Route::get('/destination/{slug}', [PublicController::class, 'show'])->name('destination.show');
+Route::get('/destinations/{slug}', [PublicDestinationController::class, 'show'])->name('destinations.show');
 
 // Kirim Review
 Route::post('/review/{id}', [PublicController::class, 'storeReview'])->name('review.store');

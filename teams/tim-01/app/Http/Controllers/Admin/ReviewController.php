@@ -13,10 +13,10 @@ class ReviewController extends Controller
     public function index()
     {
         $reviews = Review::with('destination')
-                    ->orderByRaw("FIELD(status, 'pending', 'approved')") // Pending duluan
-                    ->latest()
-                    ->paginate(10);
-                    
+            ->orderByRaw("FIELD(status, 'pending', 'approved')") // Pending duluan
+            ->latest()
+            ->paginate(10);
+
         return view('admin.reviews.index', compact('reviews'));
     }
 
@@ -24,7 +24,7 @@ class ReviewController extends Controller
     public function approve($id)
     {
         $review = Review::findOrFail($id);
-        
+
         $review->update([
             'status' => 'approved'
         ]);
