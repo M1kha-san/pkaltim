@@ -1,0 +1,20 @@
+{
+  "name": "wisata-alam-kaltim",
+  "version": "1.0.0",
+  "description": "Sistem Informasi Wisata Alam Kalimantan Timur",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch",
+    "build": "npx tailwindcss -i ./public/css/input.css -o ./public/css/output.css --minify"
+  },
+  "keywords": [
+    "wisata",
+    "kaltim",
+    "tailwind",
+    "php"
+  ],
+  "author": "Tim-02",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}

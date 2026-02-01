@@ -1,0 +1,3 @@
+# Deny access to all files in app directory
+# This prevents direct access to PHP source files
+Deny from all

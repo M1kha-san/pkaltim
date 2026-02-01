@@ -1,0 +1,3 @@
+# Deny access to database files and SQL dumps
+# This prevents downloading of sensitive database information
+Deny from all

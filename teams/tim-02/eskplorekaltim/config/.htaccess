@@ -1,0 +1,3 @@
+# Deny access to all files in config directory
+# This prevents direct access to sensitive configuration files
+Deny from all

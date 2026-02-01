@@ -1,0 +1,54 @@
+# ENVIRONMENT & SENSITIVE DATA
+
+.env
+.env.*
+!.env.example
+SECURITY.md
+
+
+# DEPENDENCIES
+
+node_modules/
+vendor/
+
+
+# BUILD & COMPILED FILES
+
+public/css/output.css
+dist/
+build/
+
+
+# USER UPLOADS & MEDIA
+
+public/images/destinations/*
+!public/images/destinations/.gitkeep
+public/images/artikel/*
+!public/images/artikel/.gitkeep
+
+
+# DATABASE
+
+*.sql
+*.sqlite
+*.db
+!database/wisata_alam_kaltim.sql
+
+
+# BACKUPS & TEMPORARY FILES
+
+_backup_*/
+*.backup
+*.bak
+*.old
+*.tmp
+tmp/
+temp/
+cache/
+
+
+# LOGS
+
+*.log
+logs/
+error_log
