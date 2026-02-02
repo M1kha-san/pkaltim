@@ -20,6 +20,7 @@ class Destination extends Model
     'description',
     'address',      // <--- Pastikan ini ada
     'price',
+    'status',
     'price_note',
     'latitude',
     'longitude',
@@ -34,7 +35,7 @@ class Destination extends Model
     // 2. Relasi ke Category
     public function categories()
     {
-        return $this->belongsTo(Category::class, 'categories_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     // 3. Relasi ke Facilities (Pivot)
