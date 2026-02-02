@@ -15,14 +15,14 @@ class DestinationController extends Controller
     {
         // Pastikan relation di Model Destination bernama 'category' (singular) atau 'categories' (plural)
         // Sesuaikan dengan nama function di App\Models\Destination.php
-        $destinations = Destination::with('categories')->latest()->paginate(10); 
+        $destinations = Destination::with('category')->latest()->paginate(10); 
         $categories = Category::all();
 
         $totalDestinations = Destination::count();
         // Hitung review jika nanti sudah ada fitur review, sementara 0 dulu
         $totalReviews = 0;   
 
-        return view('admin.Index', compact('destinations', 'categories', 'totalDestinations', 'totalReviews'));
+        return view('admin.Destination', compact('destinations', 'categories', 'totalDestinations', 'totalReviews'));
     }
 
     public function store(Request $request)

@@ -131,7 +131,7 @@
 
                             <h3
                                 class="font-bold text-gray-900 dark:text-white text-lg mb-4 group-hover:text-brand-500 transition line-clamp-1">
-                                <a href="{{ route('destinations.show', $item->slug) }}">
+                                <a href="{{ route('destination.show', $item->slug) }}">
                                     {{ $item->name }}
                                 </a>
                             </h3>

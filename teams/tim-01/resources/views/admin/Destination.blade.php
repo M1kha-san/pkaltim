@@ -135,7 +135,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-600">
                                         <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
-                                            {{ $item->categories->name}}
+                                            {{ $item->category->name}}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-600 truncate max-w-[150px]" title="{{ $item->address ?? $item->location }}">{{ $item->address ?? $item->location }}</td>

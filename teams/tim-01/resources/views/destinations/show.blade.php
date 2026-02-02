@@ -3,62 +3,45 @@
 @section('title', $destination->name . ' - Wisata Alam')
 
 @section('content')
-    <!-- 
-              DESIGN IMPLEMENTATION:
-              - Primary Dark: #0B3B2D
-              - Accent: #22c55e
-              - Font: Inter (via Layout)
-            -->
-
-    <!-- 1. Hero Section (Edge-to-Edge) -->
     <div class="relative w-full h-[85vh] min-h-[600px] bg-gray-900 overflow-hidden">
-        <!-- Background Image -->
         @php
-            $heroImage = 'https://images.unsplash.com/photo-1596401057633-565652f56878?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80';
-            // Use seeded image if available
+            // Default image
+            $heroImage = 'https://images.unsplash.com/photo-1596401057633-565652f56878?ixlib=rb-4.0.3';
+            
+            // Cek jika ada foto di database (pakai 'image_path' sesuai DB)
             if ($destination->images && $destination->images->count() > 0) {
-                $heroImage = asset('storage/' . $destination->images->first()->path);
+                $heroImage = asset('storage/' . $destination->images->first()->image_path); 
             }
-
-            // Calculate dynamic rating for Hero
-            $avgRating = $destination->reviews->avg('rating') ?? 0;
-            $totalReviews = $destination->reviews->count();
+            
+            // Hitung Rating (Hanya yang approved jika perlu)
+            // Menggunakan collection filter agar aman
+            $approvedReviews = $destination->reviews->where('status', 'approved');
+            $avgRating = $approvedReviews->avg('rating') ?? 0;
+            $totalReviews = $approvedReviews->count();
         @endphp
+
         <img src="{{ $heroImage }}" alt="{{ $destination->name }}"
             class="absolute inset-0 w-full h-full object-cover opacity-90">
 
-        <!-- Dark Gradient Overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
-        <!-- Content -->
         <div class="absolute inset-0 flex flex-col justify-end pb-20">
             <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative">
-
-                <!-- Breadcrumbs/Tag -->
                 <div class="mb-6 flex items-center space-x-3 text-sm font-medium text-white/80">
                     <span class="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-white">
                         <i class="fa-solid fa-location-dot mr-2 text-[#22c55e]"></i>
-                        {{ $destination->address ?? 'Kalimantan Timur' }}
+                        {{ $destination->address ?? 'Lokasi Belum Diisi' }}
                     </span>
                     <span class="hidden md:inline">/</span>
-                    <span class="hidden md:inline hover:text-white transition">Destinasi</span>
-                    <span class="hidden md:inline">/</span>
-                    <span class="text-[#22c55e] hidden md:inline">{{ $destination->category->name ?? 'Wisata' }}</span>
+                    <span class="text-[#22c55e] hidden md:inline">{{ $destination->category->name ?? 'Umum' }}</span>
                 </div>
 
-                <!-- Title -->
                 <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight leading-tight">
                     {{ $destination->name }}
                 </h1>
 
-                <!-- Subtitle & Rating -->
                 <div class="flex flex-col md:flex-row md:items-center gap-6 text-white/90">
-                    <p class="text-lg md:text-xl font-light max-w-2xl opacity-90">
-                        {{ \Illuminate\Support\Str::limit($destination->description, 100) }}
-                    </p>
-
-                    <div
-                        class="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-2xl border border-white/10">
+                    <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-2xl border border-white/10">
                         <i class="fa-solid fa-star text-yellow-400 text-xl"></i>
                         <div>
                             <span class="text-xl font-bold text-white">{{ number_format($avgRating, 1) }}</span>
@@ -66,61 +49,47 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Navigation Arrows (Bottom Left) -->
-                <div class="hidden md:flex absolute bottom-0 right-4 lg:right-8 gap-4 translate-y-1/2 z-10">
-                    <button
-                        class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-[#22c55e] hover:border-[#22c55e] transition-all duration-300 group">
-                        <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-                    </button>
-                    <button
-                        class="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-[#22c55e] hover:border-[#22c55e] transition-all duration-300 group">
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                    </button>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- 2. Main Layout -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 bg-[#F8F9FA]">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 
-            <!-- Left Column (Main Content) -->
             <div class="lg:col-span-2 space-y-12">
 
-                <!-- Description -->
                 <section>
                     <h2 class="text-2xl font-bold text-[#0B3B2D] mb-6 flex items-center gap-3">
                         <span class="w-8 h-1 bg-[#22c55e] rounded-full"></span>
                         Tentang Destinasi
                     </h2>
                     <div class="prose prose-lg text-gray-600 leading-relaxed text-justify">
-                        {{ $destination->description }}
+                        {!! nl2br(e($destination->description)) !!}
                     </div>
                 </section>
 
-                <!-- Facilities Grid -->
                 <section>
                     <h2 class="text-2xl font-bold text-[#0B3B2D] mb-6 flex items-center gap-3">
                         <span class="w-8 h-1 bg-[#22c55e] rounded-full"></span>
                         Fasilitas
                     </h2>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        @foreach($destination->facilities as $facility)
-                            <div
-                                class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:shadow-md transition-shadow group">
-                                <div
-                                    class="w-12 h-12 rounded-full bg-[#ecfdf5] flex items-center justify-center text-[#105e43] group-hover:bg-[#0B3B2D] group-hover:text-white transition-colors duration-300">
-                                    <i class="fa-solid {{ $facility['icon'] }} text-lg"></i>
+                        {{-- Gunakan forelse untuk jaga-jaga kalau kosong --}}
+                        @forelse($destination->facilities as $facility)
+                            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-3 hover:shadow-md transition-shadow group">
+                                <div class="w-12 h-12 rounded-full bg-[#ecfdf5] flex items-center justify-center text-[#105e43] group-hover:bg-[#0B3B2D] group-hover:text-white transition-colors duration-300">
+                                    {{-- PERBAIKAN: Gunakan object syntax (->) dan nama kolom 'icon_class' --}}
+                                    <i class="fa-solid {{ $facility->icon_class ?? 'fa-check' }} text-lg"></i>
                                 </div>
-                                <span class="text-sm font-medium text-gray-700 text-center">{{ $facility['label'] }}</span>
+                                {{-- PERBAIKAN: Gunakan object syntax (->) dan nama kolom 'name' --}}
+                                <span class="text-sm font-medium text-gray-700 text-center">{{ $facility->name }}</span>
                             </div>
-                        @endforeach
+                        @empty
+                            <p class="text-gray-500 col-span-4">Belum ada data fasilitas.</p>
+                        @endforelse
                     </div>
                 </section>
 
-                <!-- Map Section -->
                 <section>
                     <h2 class="text-2xl font-bold text-[#0B3B2D] mb-6 flex items-center gap-3">
                         <span class="w-8 h-1 bg-[#22c55e] rounded-full"></span>
@@ -130,124 +99,50 @@
                         <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
                             src="https://maps.google.com/maps?q={{ urlencode($destination->address ?? 'Kalimantan Timur') }}&t=&z=13&ie=UTF8&iwloc=&output=embed">
                         </iframe>
-                        <div
-                            class="absolute bottom-4 right-4 bg-white px-4 py-2 rounded-lg shadow-lg text-xs font-bold text-gray-700">
-                            {{ $destination->address }}
-                        </div>
                     </div>
                 </section>
 
-                <!-- Reviews -->
                 <section>
                     <h2 class="text-2xl font-bold text-[#0B3B2D] mb-6 flex items-center gap-3">
                         <span class="w-8 h-1 bg-[#22c55e] rounded-full"></span>
-                        Tulis Ulasan
+                        Ulasan Pengunjung
                     </h2>
 
-                    <!-- Flash Messages -->
                     @if(session('success'))
-                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6"
-                            role="alert">
-                            <span class="block sm:inline">{{ session('success') }}</span>
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6">
+                            {{ session('success') }}
                         </div>
                     @endif
 
-                    @if(session('error'))
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-                            <span class="block sm:inline">{{ session('error') }}</span>
-                        </div>
-                    @endif
-
-                    <!-- Review Form -->
-                    <form action="{{ route('review.store', $destination->id) }}" method="POST"
-                        class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-12">
+                    <form action="{{ route('review.store', $destination->id) }}" method="POST" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm mb-12">
                         @csrf
                         <div class="space-y-4">
-                            <!-- Name -->
                             <div>
-                                <label for="visitor_name" class="block text-sm font-medium text-gray-700 mb-1">Nama
-                                    Anda</label>
-                                <input type="text" name="visitor_name" id="visitor_name" required
-                                    class="w-full rounded-xl border-gray-300 focus:border-[#22c55e] focus:ring focus:ring-[#22c55e]/20 transition-colors"
-                                    placeholder="Masukkan nama lengkap">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Anda</label>
+                                <input type="text" name="visitor_name" required class="w-full rounded-xl border-gray-300 p-2 border">
                             </div>
-
-                            <!-- Rating -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Rating</label>
-                                <div class="flex gap-2">
-                                    <select name="rating" required
-                                        class="w-full sm:w-auto rounded-xl border-gray-300 focus:border-[#22c55e] focus:ring focus:ring-[#22c55e]/20 transition-colors">
-                                        <option value="5">⭐⭐⭐⭐⭐ (Sangat Bagus)</option>
-                                        <option value="4">⭐⭐⭐⭐ (Bagus)</option>
-                                        <option value="3">⭐⭐⭐ (Cukup)</option>
-                                        <option value="2">⭐⭐ (Kurang)</option>
-                                        <option value="1">⭐ (Sangat Kurang)</option>
-                                    </select>
-                                </div>
+                                <select name="rating" required class="w-full rounded-xl border-gray-300 p-2 border">
+                                    <option value="5">⭐⭐⭐⭐⭐ (Sangat Bagus)</option>
+                                    <option value="4">⭐⭐⭐⭐ (Bagus)</option>
+                                    <option value="3">⭐⭐⭐ (Cukup)</option>
+                                    <option value="2">⭐⭐ (Kurang)</option>
+                                    <option value="1">⭐ (Sangat Kurang)</option>
+                                </select>
                             </div>
-
-                            <!-- Comment -->
                             <div>
-                                <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">Komentar</label>
-                                <textarea name="comment" id="comment" rows="4" required
-                                    class="w-full rounded-xl border-gray-300 focus:border-[#22c55e] focus:ring focus:ring-[#22c55e]/20 transition-colors"
-                                    placeholder="Bagikan pengalaman Anda..."></textarea>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Komentar</label>
+                                <textarea name="comment" rows="4" required class="w-full rounded-xl border-gray-300 p-2 border"></textarea>
                             </div>
-
-                            <button type="submit"
-                                class="w-full bg-[#0B3B2D] text-white font-bold py-3 px-6 rounded-xl hover:bg-[#072d22] transition-colors flex items-center justify-center gap-2">
-                                <i class="fa-regular fa-paper-plane"></i>
+                            <button type="submit" class="w-full bg-[#0B3B2D] text-white font-bold py-3 px-6 rounded-xl hover:bg-[#072d22]">
                                 Kirim Ulasan
                             </button>
                         </div>
                     </form>
 
-                    <h2 class="text-2xl font-bold text-[#0B3B2D] mb-8 flex items-center gap-3">
-                        <span class="w-8 h-1 bg-[#22c55e] rounded-full"></span>
-                        Ulasan Pengunjung
-                    </h2>
-
-                    <!-- Review Summary -->
-                    <div
-                        class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm mb-8 flex flex-col md:flex-row gap-8 items-center">
-                        <div class="text-center md:text-left min-w-[150px]">
-                            <div class="text-6xl font-black text-[#0B3B2D]">{{ number_format($avgRating, 1) }}</div>
-                            <div class="flex justify-center md:justify-start text-yellow-400 text-sm my-2 gap-1">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= floor($avgRating))
-                                        <i class="fa-solid fa-star"></i>
-                                    @elseif($i == ceil($avgRating) && $avgRating - floor($avgRating) > 0)
-                                        <i class="fa-solid fa-star-half-stroke"></i>
-                                    @else
-                                        <i class="fa-regular fa-star"></i>
-                                    @endif
-                                @endfor
-                            </div>
-                            <p class="text-sm text-gray-400 tracking-wide font-medium">{{ number_format($totalReviews) }}
-                                Reviews</p>
-                        </div>
-
-                        <div class="flex-1 w-full space-y-3">
-                            @foreach([5, 4, 3, 2, 1] as $star)
-                                @php
-                                    $count = $destination->reviews->where('rating', $star)->count();
-                                    $percentage = $totalReviews > 0 ? ($count / $totalReviews) * 100 : 0;
-                                @endphp
-                                <div class="flex items-center gap-4">
-                                    <span class="text-xs font-bold text-gray-400 w-3">{{ $star }}</span>
-                                    <div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden">
-                                        <div class="h-full bg-[#22c55e] rounded-full" style="width: {{ $percentage }}%"></div>
-                                    </div>
-                                    <span class="text-xs text-gray-400 w-6 text-right">{{ $count }}</span>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Review Cards List -->
                     <div class="space-y-6">
-                        @foreach($destination->reviews as $review)
+                        @foreach($approvedReviews as $review)
                             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex gap-4">
                                 <img src="https://ui-avatars.com/api/?name={{ urlencode($review->visitor_name) }}&background=0B3B2D&color=fff"
                                     class="w-12 h-12 rounded-full object-cover shadow-sm">
@@ -265,31 +160,54 @@
                         @endforeach
                     </div>
                 </section>
-
             </div>
 
-            <!-- Right Column (Sidebar) -->
             <div class="lg:col-span-1">
                 <aside class="sticky top-6 space-y-6">
-
-
-
-                    <!-- Info Card -->
+                    
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <h4 class="font-bold text-gray-900 mb-4 text-lg">Informasi Tambahan</h4>
+                        <h4 class="font-bold text-gray-900 mb-4 text-lg">Informasi Kunjungan</h4>
                         <ul class="space-y-4">
-                            @foreach($destination->highlights as $highlight)
-                                <li class="flex items-center gap-3 text-sm text-gray-600">
-                                    <div
-                                        class="w-6 h-6 rounded-full bg-green-50 flex items-center justify-center text-[#22c55e] flex-shrink-0">
-                                        <i class="fa-solid fa-check text-xs"></i>
-                                    </div>
-                                    {{ $highlight }}
-                                </li>
-                            @endforeach
+                            <li class="flex items-center gap-3 text-sm text-gray-600">
+                                <div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-[#22c55e] flex-shrink-0">
+                                    <i class="fa-solid fa-tag text-xs"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-gray-400">Harga Tiket</span>
+                                    <span class="font-bold text-gray-800">
+                                        Rp {{ number_format($destination->price, 0, ',', '.') }}
+                                    </span>
+                                    @if($destination->price_note)
+                                        <span class="text-xs text-gray-500">({{ $destination->price_note }})</span>
+                                    @endif
+                                </div>
+                            </li>
+
+                            <li class="flex items-center gap-3 text-sm text-gray-600">
+                                <div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-[#22c55e] flex-shrink-0">
+                                    <i class="fa-solid fa-clock text-xs"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-gray-400">Jam Operasional</span>
+                                    <span class="font-bold text-gray-800">
+                                        {{ $destination->opening_hours ?? 'Setiap Hari' }}
+                                    </span>
+                                </div>
+                            </li>
+                            
+                             <li class="flex items-center gap-3 text-sm text-gray-600">
+                                <div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-[#22c55e] flex-shrink-0">
+                                    <i class="fa-solid fa-info-circle text-xs"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-xs text-gray-400">Status</span>
+                                    <span class="font-bold {{ $destination->status == 'active' ? 'text-green-600' : 'text-red-500' }}">
+                                        {{ $destination->status == 'active' ? 'Buka / Aktif' : 'Tutup Sementara' }}
+                                    </span>
+                                </div>
+                            </li>
                         </ul>
                     </div>
-
                 </aside>
             </div>
 

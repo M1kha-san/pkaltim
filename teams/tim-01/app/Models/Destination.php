@@ -42,7 +42,7 @@ class Destination extends Model
     // 3. Relasi ke Facilities (Pivot)
     public function facilities()
     {
-        return $this->belongsToMany(Facility::class, 'destination_facility');
+        return $this->belongsToMany(Facility::class, 'destination_facilities');
     }
 
     // 4. Relasi ke Images 
@@ -56,5 +56,11 @@ class Destination extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function approvedReviews()
+    {
+        // Kita pakai relasi reviews, tapi difilter statusnya
+        return $this->hasMany(Review::class)->where('status', 'approved');
     }
 }

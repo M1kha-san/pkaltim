@@ -133,7 +133,7 @@
                                         <p class="text-[10px] text-gray-400 uppercase font-semibold">Mulai Dari</p>
                                         <p class="font-bold text-gray-900 dark:text-white">IDR {{ number_format($item->price ?? 0, 0, ',', '.') }}</p>
                                     </div>
-                                    <a href="{{ route('destinations.show', $item->slug) }}" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-500 group-hover:bg-brand-500 group-hover:text-white transform group-hover:rotate-45">
+                                    <a href="{{ route('destination.show', $item->slug) }}" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-500 group-hover:bg-brand-500 group-hover:text-white transform group-hover:rotate-45">
                                         <i class="fa-solid fa-arrow-right"></i>
                                     </a>
                                 </div>

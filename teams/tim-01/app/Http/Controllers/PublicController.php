@@ -59,7 +59,7 @@ class PublicController extends Controller
             ->firstOrFail();
 
         // SAYA UBAH: dari 'front.detail' ke 'public.detail' agar konsisten satu folder
-        return view('public.detail', compact('destination'));
+        return view('destinations.show', compact('destination'));
     }
 
     /**
