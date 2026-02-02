@@ -7,9 +7,9 @@
 **PIC:** [Navies]
 
 ### 👥 Anggota Tim
-- **[Muhammad Rifqi Ramadhan]** (Leader) – Project Manager
-- **[Muhammad Zidan Pratama]** –  Backend
-- **[Rafik Anugrah Yana]** – Frontend UI/UX
+- **[Muhammad Rifqi Ramadhan]**
+- **[Muhammad Zidan Pratama]**
+- **[Rafik Anugrah Yana]**
 
 ---
 
@@ -64,6 +64,32 @@ Sistem dibangun menggunakan **Laravel 12.x** dan **MySQL**, dengan **Bootstrap 5
 - **Chart:** Chart.js  
 - **Authentication:** Session & Bcrypt  
 - **Maps:** Google Maps Embed  
+
+---
+
+## 📦 Cara Instalasi
+Jika ingin menjalankan project ini di komputer lokal, ikuti langkah berikut:
+
+1.  **Masuk ke direktori:**
+    ```bash
+    cd pkaltim/teams/tim-09
+    ```
+2.  **Install Vendor:**
+    ```bash
+    composer install
+    ```
+3.  **Setup Environment:**
+    * Copy file `.env.example` menjadi `.env`.
+    * Atur database: `DB_DATABASE=db_kulkaltim`.
+4.  **Migrate Database:**
+    ```bash
+    php artisan key:generate
+    php artisan migrate:fresh --seed
+    ```
+5.  **Jalankan Server:**
+    ```bash
+    php artisan serve
+    ```
 
 ---
 
