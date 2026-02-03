@@ -78,7 +78,7 @@ class PublicController extends Controller
             ->first();
 
         // SAYA UBAH: dari 'front.detail' ke 'public.detail' agar konsisten satu folder
-        return view('destinations.show', compact('destination'));
+        return view('public.detail', compact('destination', 'nextDestination', 'prevDestination'));
     }
 
     /**
@@ -105,6 +105,7 @@ class PublicController extends Controller
         ]);
 
         return back()
-            ->with('success', 'Komentarmu sedang dalam proses, terimakasih atas komentarnya!');
+            ->with('success', 'Komentarmu sedang dalam proses, terimakasih atas komentarnya!')
+            ->with('reviewed_' . $id, true);
     }
 }

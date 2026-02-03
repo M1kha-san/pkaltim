@@ -62,4 +62,23 @@ class Destination extends Model
         // Kita pakai relasi reviews, tapi difilter statusnya
         return $this->hasMany(Review::class)->where('status', 'approved');
     }
+
+    // Accessor for thumbnail
+    public function getThumbnailAttribute()
+    {
+        // 1. Cek jika ada gambar primary
+        $primary = $this->images->where('is_primary', true)->first();
+        if ($primary) {
+            return asset('storage/' . $primary->image_path);
+        }
+
+        // 2. Jika tidak ada, ambil gambar pertama apa saja
+        $first = $this->images->first();
+        if ($first) {
+            return asset('storage/' . $first->image_path);
+        }
+
+        // 3. Fallback placeholder
+        return 'https://images.unsplash.com/photo-1596401057633-565652f56878?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+    }
 }
