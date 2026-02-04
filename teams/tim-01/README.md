@@ -1,7 +1,7 @@
-# 🏞️ Tim 1 - Wisata Alam Kalimantan Timur
+# 🏞️ Tim 1 - Wisata Alam Kalimantan Timur (WisataKaltim)
 
 **PIC:** Navies
-**Subtema:** Wisata Alam Kalimantan Timur
+**Subtema:** Wisata Alam Kalimantan Timur (WisataKaltim)
 
 ## 👥 Anggota Tim
 1. Glenn (Leader, Frontend & backend, Analyst)
@@ -10,6 +10,8 @@
 
 ## 📝 Deskripsi Project
 Website promosi dan informasi destinasi wisata alam unggulan di Kalimantan Timur. Website ini memudahkan wisatawan untuk mencari lokasi wisata, melihat fasilitas, galeri foto, serta memberikan ulasan pengalaman mereka.
+
+![Tampilan Landing Page](teams/tim-01/screenshots/landingpage.png)
 
 ## 🎯 Fitur Utama
 - ✅ **Landing Page Modern:** Desain responsif, hero section menarik, dan kartu destinasi premium.
@@ -104,11 +106,6 @@ Akses website di: `http://localhost:8000`
 
 ## Bugs & Fix
 - [ ] Penggunaan Memory meningkat setiap halaman di-refresh
-
-## 📞 Kontak Tim
-- **Glenn:** Leader / Backend
-- **Bregas:** Frontend / UI
-- **Reza:** Database / Content
 
 ---
 **Tim 1 - Wisata Alam Kaltim** © 2026

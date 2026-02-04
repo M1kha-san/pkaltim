@@ -142,65 +142,60 @@
         </section>
 
         <!-- Photo Slider Section -->
-        <section x-data="{ activeSlide: 0, slides: [
-                                                        @if($galleryImages->count() > 0)
-                                                            @foreach($galleryImages as $img)
-                                                                '{{ asset('storage/' . $img->image_path) }}',
-                                                            @endforeach
-                                                        @else
-                                                            'https://images.unsplash.com/photo-1544413660-29911cd4f0bc?q=80&w=1932&auto=format&fit=crop',
-                                                            'https://images.unsplash.com/photo-1596401057633-565652dc80fa?q=80&w=1955&auto=format&fit=crop',
-                                                            'https://images.unsplash.com/photo-1518182170546-0766ce6fec56?q=80&w=1920&auto=format&fit=crop',
-                                                            'https://images.unsplash.com/photo-1533692328991-08159ff19fca?q=80&w=1980&auto=format&fit=crop'
-                                                        @endif
-                                                    ], interval: null }"
-            x-init="interval = setInterval(() => { activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1 }, 5000)"
-            class="mb-10" data-aos="fade-up">
-            <div class="mb-10 text-center">
-                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Galeri Wisata</h2>
-            </div>
-
-            <div
-                class="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl group border border-gray-100 dark:border-gray-800">
-                <!-- Slides -->
-                <template x-for="(slide, index) in slides" :key="index">
-                    <div x-show="activeSlide === index" x-transition:enter="transition transform duration-700 ease-out"
-                        x-transition:enter-start="opacity-0 scale-105" x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="transition transform duration-700 ease-in"
-                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                        class="absolute inset-0">
-                        <img :src="slide" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
-                    </div>
-                </template>
-
-                <!-- Navigation Buttons -->
-                <button
-                    @click="clearInterval(interval); activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1"
-                    class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 backdrop-blur-md text-white p-3 rounded-full transition opacity-0 group-hover:opacity-100 border border-white/20">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </button>
-                <button
-                    @click="clearInterval(interval); activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1"
-                    class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 backdrop-blur-md text-white p-3 rounded-full transition opacity-0 group-hover:opacity-100 border border-white/20">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </button>
-
-                <!-- Indicators -->
-                <div
-                    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2 bg-black/20 backdrop-blur-sm p-2 rounded-full border border-white/10">
-                    <template x-for="(slide, index) in slides" :key="index">
-                        <button @click="clearInterval(interval); activeSlide = index"
-                            :class="{'bg-brand-500 w-8': activeSlide === index, 'bg-white/50 w-2 hover:bg-white': activeSlide !== index}"
-                            class="h-2 rounded-full transition-all duration-300"></button>
-                    </template>
+        @if($galleryImages->count() > 0)
+            <section x-data="{ activeSlide: 0, slides: [
+                                                                    @foreach($galleryImages as $img)
+                                                                        '{{ asset('storage/' . $img->image_path) }}',
+                                                                    @endforeach
+                                                                ], interval: null }"
+                x-init="interval = setInterval(() => { activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1 }, 5000)"
+                class="mb-10" data-aos="fade-up">
+                <div class="mb-10 text-center">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Galeri Wisata</h2>
                 </div>
-            </div>
-        </section>
+
+                <div
+                    class="relative w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden shadow-2xl group border border-gray-100 dark:border-gray-800">
+                    <!-- Slides -->
+                    <template x-for="(slide, index) in slides" :key="index">
+                        <div x-show="activeSlide === index" x-transition:enter="transition transform duration-700 ease-out"
+                            x-transition:enter-start="opacity-0 scale-105" x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition transform duration-700 ease-in"
+                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute inset-0">
+                            <img :src="slide" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+                        </div>
+                    </template>
+
+                    <!-- Navigation Buttons -->
+                    <button
+                        @click="clearInterval(interval); activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1"
+                        class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 backdrop-blur-md text-white p-3 rounded-full transition opacity-0 group-hover:opacity-100 border border-white/20">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <button
+                        @click="clearInterval(interval); activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1"
+                        class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 backdrop-blur-md text-white p-3 rounded-full transition opacity-0 group-hover:opacity-100 border border-white/20">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Indicators -->
+                    <div
+                        class="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2 bg-black/20 backdrop-blur-sm p-2 rounded-full border border-white/10">
+                        <template x-for="(slide, index) in slides" :key="index">
+                            <button @click="clearInterval(interval); activeSlide = index"
+                                :class="{'bg-brand-500 w-8': activeSlide === index, 'bg-white/50 w-2 hover:bg-white': activeSlide !== index}"
+                                class="h-2 rounded-full transition-all duration-300"></button>
+                        </template>
+                    </div>
+                </div>
+            </section>
+        @endif
 
         <!-- FAQ Section -->
         <section>
@@ -291,18 +286,18 @@
 
         <!-- Preloader -->
         <div x-data="{ 
-                        visible: !sessionStorage.getItem('landing_loaded'),
-                        init() {
-                            if(this.visible) {
-                                 document.body.classList.add('overflow-hidden');
-                                 setTimeout(() => {
-                                    this.visible = false;
-                                    sessionStorage.setItem('landing_loaded', 'true');
-                                    document.body.classList.remove('overflow-hidden');
-                                 }, 3000); // 3 seconds duration
-                            }
-                        }
-                    }" x-show="visible" x-transition:leave="transition ease-in duration-500"
+                                visible: !sessionStorage.getItem('landing_loaded'),
+                                init() {
+                                    if(this.visible) {
+                                         document.body.classList.add('overflow-hidden');
+                                         setTimeout(() => {
+                                            this.visible = false;
+                                            sessionStorage.setItem('landing_loaded', 'true');
+                                            document.body.classList.remove('overflow-hidden');
+                                         }, 3000); // 3 seconds duration
+                                    }
+                                }
+                            }" x-show="visible" x-transition:leave="transition ease-in duration-500"
             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
             class="fixed inset-0 z-[100] bg-white dark:bg-gray-900 flex flex-col items-center justify-center">
 

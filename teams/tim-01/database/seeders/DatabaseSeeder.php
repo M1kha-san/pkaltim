@@ -110,11 +110,6 @@ class DatabaseSeeder extends Seeder
                 'longitude' => '118.2464',
                 'status' => 'active',
                 'facilities' => ['Area Parkir', 'Warung Makan', 'Penyewaan Alat', 'Spot Foto', 'Gazebo'],
-                'images' => [
-                    'https://images.unsplash.com/photo-1579603673528-76615a770ae1?q=80&w=1000&auto=format&fit=crop', // Primary
-                    'https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=1000&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1582967788606-a171f1080ca8?q=80&w=1000&auto=format&fit=crop'
-                ]
             ],
             [
                 'category_id' => $catAlam->id,
@@ -128,12 +123,7 @@ class DatabaseSeeder extends Seeder
                 'latitude' => '1.2583',
                 'longitude' => '118.6961',
                 'status' => 'active',
-                'facilities' => ['Area Parkir', 'Spot Foto', 'Penyewaan Alat', 'Warung Makan'],
-                'images' => [
-                    'https://asset.kompas.com/crops/64eP4B0k0j6k-25P5t279z-33-I=/0x0:1000x667/750x500/data/photo/2020/01/27/5e2e882583204.jpg', // Primary
-                    'https://ksmtour.com/media/images/articles9/danau-labuan-cermin-kalimantan-timur.jpg',
-                    'https://www.indonesia.travel/content/dam/indonesia-travel/warisan-budaya/labuan-cermin/labuan-cermin-1.jpg'
-                ]
+                'facilities' => ['Area Parkir', 'Spot Foto', 'Penyewaan Alat', 'Warung Makan']
             ],
             [
                 'category_id' => $catAlam->id,
@@ -147,12 +137,7 @@ class DatabaseSeeder extends Seeder
                 'latitude' => '-0.9634', // Approximate
                 'longitude' => '116.8904',
                 'status' => 'active',
-                'facilities' => ['Area Parkir', 'Toilet Umum', 'Mushola', 'Jungle Trekking', 'Warung Makan', 'Spot Foto'],
-                'images' => [
-                    'https://images.unsplash.com/photo-1596401057633-565652f56878?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', // Placeholder forest
-                    'https://upload.wikimedia.org/wikipedia/commons/e/e0/Canopy_Bridge_Bukit_Bangkirai.jpg',
-                    'https://ksmtour.com/media/images/articles13/bukit-bangkirai-kalimantan-timur.jpg'
-                ]
+                'facilities' => ['Area Parkir', 'Toilet Umum', 'Mushola', 'Jungle Trekking', 'Warung Makan', 'Spot Foto']
             ],
             [
                 'category_id' => $catBudaya->id,
@@ -166,12 +151,7 @@ class DatabaseSeeder extends Seeder
                 'latitude' => '-0.3871',
                 'longitude' => '117.2285',
                 'status' => 'active',
-                'facilities' => ['Area Parkir', 'Toilet Umum', 'Spot Foto', 'Warung Makan'],
-                'images' => [
-                    'https://upload.wikimedia.org/wikipedia/commons/5/5f/Pampang_Cultural_Park.jpg',
-                    'https://www.indonesia.travel/content/dam/indonesia-travel/warisan-budaya/desa-pampang/desa-pampang-1.jpg',
-                    'https://images.unsplash.com/photo-1582651478799-73e4db1264c7?q=80&w=1000' // Generic culture
-                ]
+                'facilities' => ['Area Parkir', 'Toilet Umum', 'Spot Foto', 'Warung Makan']
             ],
             [
                 'category_id' => $catAlam->id,
@@ -185,11 +165,7 @@ class DatabaseSeeder extends Seeder
                 'latitude' => '0.3667',
                 'longitude' => '117.2500',
                 'status' => 'active',
-                'facilities' => ['Jungle Trekking', 'Camping Ground', 'Toilet Umum', 'Gazebo'],
-                'images' => [
-                    'https://images.unsplash.com/photo-1629814486586-1335d1f59275?q=80&w=1000', // Orangutan
-                    'https://assets.kompasiana.com/items/album/2021/08/14/taman-nasional-kutai-61176b6b06310e7b416e53c2.jpg'
-                ]
+                'facilities' => ['Jungle Trekking', 'Camping Ground', 'Toilet Umum', 'Gazebo']
             ],
             [
                 'category_id' => $catBahari->id,
@@ -203,11 +179,7 @@ class DatabaseSeeder extends Seeder
                 'latitude' => '-1.2725',
                 'longitude' => '116.8159',
                 'status' => 'active',
-                'facilities' => ['Area Parkir', 'Warung Makan', 'Toilet Umum', 'Spot Foto'],
-                'images' => [
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Melawai_Beach_Balikpapan.jpg/1200px-Melawai_Beach_Balikpapan.jpg',
-                    'https://www.borneonews.co.id/images/upload/1660636731-pantai-melawai.jpg'
-                ]
+                'facilities' => ['Area Parkir', 'Warung Makan', 'Toilet Umum', 'Spot Foto']
             ],
             [
                 'category_id' => $catBahari->id,
@@ -221,11 +193,7 @@ class DatabaseSeeder extends Seeder
                 'latitude' => '2.1492',
                 'longitude' => '118.5250',
                 'status' => 'active',
-                'facilities' => ['Spot Foto', 'Penyewaan Alat'], // Minim fasilitas
-                'images' => [
-                    'https://indonesia.travel/content/dam/indonesia-travel/warisan-budaya/kakaban/kakaban-1.jpg',
-                    'https://cdn.nativeindonesia.com/foto/pulau-kakaban/Danau-Kakaban.jpg'
-                ]
+                'facilities' => ['Spot Foto', 'Penyewaan Alat'] // Minim fasilitas
             ]
         ];
 
@@ -269,6 +237,6 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('✅ Destinations, Images & Reviews seeded successfully!');
+        $this->command->info('✅ Destinations, Images (null) & Reviews seeded successfully!');
     }
 }
